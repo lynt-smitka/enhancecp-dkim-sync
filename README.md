@@ -2,6 +2,10 @@
 
 This system automates the synchronization of OpenDKIM configuration between a primary mail server and multiple secondary web servers for EnhanceCP hosting environments (https://enhance.com/).
 
+## Motivation
+
+In default EnhanceCP configuration, DKIM signatures are only applied to emails sent directly from the mail server's mailboxes. Emails sent from web servers are not signed by default, which can lead to delivery issues and spam filtering problems. This script solves this by synchronizing DKIM configuration across all servers, ensuring consistent email signing regardless of the sending server.
+
 ## Components
 
 - `dkim_watch.sh`: Monitors OpenDKIM configuration files for changes
@@ -62,6 +66,42 @@ After installation:
 - When changes are detected, it waits 5 seconds to collect related changes
 - Changes are synchronized to all secondary web servers defined in the configuration
 - Each synchronization is logged to `/var/log/dkim_sync/`
+
+## Manual Installation Steps
+
+If you prefer to install the system manually instead of using the installation script:
+
+### Primary Mail Server
+
+1. Install required packages:
+   - inotify-tools
+   - rsync
+
+2. Create user `dkim-sync` with home directory `/home/dkim-sync`
+
+3. Generate SSH key pair for the `dkim-sync` user
+
+4. Copy files to their destinations:
+   - `dkim_sync.sh` → `/usr/local/bin/`
+   - `dkim_watch.sh` → `/usr/local/bin/`
+   - `dkim-sync.service` → `/etc/systemd/system/`
+   - `dkim-sync-primary` → `/etc/sudoers.d/`
+
+5. Create required directories (owned by dkim-sync):
+   - `/var/log/dkim_sync/` 
+   - `/etc/dkim_sync/`
+   - `/etc/dkim_sync/servers.conf`
+
+6. Enable and start the systemd service
+
+### Secondary Web Servers
+
+1. Create system user `dkim-sync` with home directory `/home/dkim-sync`
+
+2. Add primary server's SSH public key to dkim-sync's `authorized_keys`
+
+3. Copy files to their destinations:
+   - `dkim-sync-secondary` → `/etc/sudoers.d/`
 
 ## Troubleshooting
 

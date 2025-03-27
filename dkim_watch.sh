@@ -1,6 +1,15 @@
 #!/bin/bash
-# dkim_watch.sh - Monitoring changes in DKIM configuration
+# dkim_watch.sh - Monitor OpenDKIM configuration files for changes
 # Location: /usr/local/bin/dkim_watch.sh
+#
+# Author: Vladimir Smitka
+# Website: https://lynt.cz
+# Personal: https://smitka.me
+# Twitter: http://x.com/smitka
+# LinkedIn: www.linkedin.com/in/vsmitka
+#
+# GitHub: https://github.com/lynt-smitka/enhancecp-dkim-sync
+
 
 # opendkim files to monitor
 WATCH_PATHS=(

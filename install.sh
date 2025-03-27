@@ -1,6 +1,15 @@
 #!/bin/bash
 # install.sh - DKIM synchronization installation script [experimental]
 # Usage: ./install.sh [primary|secondary|test]
+#
+# Author: Vladimir Smitka
+# Website: https://lynt.cz
+# Personal: https://smitka.me
+# Twitter: http://x.com/smitka
+# LinkedIn: www.linkedin.com/in/vsmitka
+#
+# GitHub: https://github.com/lynt-smitka/enhancecp-dkim-sync
+
 
 # Check if running as root
 if [ "$(id -u)" -ne 0 ]; then

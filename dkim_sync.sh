@@ -2,6 +2,15 @@
 # dkim_sync.sh - Synchronization of DKIM configuration to web servers
 # Location: /usr/local/bin/dkim_sync.sh
 # This script runs as user dkim-sync
+#
+# Author: Vladimir Smitka
+# Website: https://lynt.cz
+# Personal: https://smitka.me
+# Twitter: http://x.com/smitka
+# LinkedIn: www.linkedin.com/in/vsmitka
+#
+# GitHub: https://github.com/lynt-smitka/enhancecp-dkim-sync
+
 
 # Config file - one server per line
 CONFIG_FILE="/etc/dkim_sync/servers.conf"
