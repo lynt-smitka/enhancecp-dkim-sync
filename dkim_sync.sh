@@ -63,7 +63,7 @@ sync_server() {
 
   # Create temporary directory structure on remote server
   log "Creating remote directory structure..."
-  ssh "dkim-sync@$server" "mkdir -p $TMP_DIR/opendkim $TMP_DIR/dkimkeys"
+  ssh -o StrictHostKeyChecking=accept-new "dkim-sync@$server" "mkdir -p $TMP_DIR/opendkim $TMP_DIR/dkimkeys"
 
   # Synchronize files from local temporary copy
   log "Transferring files to remote server..."
@@ -72,7 +72,7 @@ sync_server() {
 
   # Apply changes on remote server and restart service
   log "Applying changes on remote server..."
-  ssh "dkim-sync@$server" "sudo rsync --chown=root:root -a $TMP_DIR/opendkim/ /etc/opendkim/ && \
+  ssh -o StrictHostKeyChecking=accept-new "dkim-sync@$server" "sudo rsync --chown=root:root -a $TMP_DIR/opendkim/ /etc/opendkim/ && \
                            sudo rsync --chown=opendkim:opendkim -a $TMP_DIR/dkimkeys/ /etc/dkimkeys/ && \
                            sudo systemctl restart opendkim && \
                            rm -rf $TMP_DIR"

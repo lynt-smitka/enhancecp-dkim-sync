@@ -1,6 +1,6 @@
 #!/bin/bash
 # install.sh - DKIM synchronization installation script [experimental]
-# Usage: ./install.sh [primary|secondary]
+# Usage: ./install.sh [primary|secondary|test]
 
 # Check if running as root
 if [ "$(id -u)" -ne 0 ]; then
@@ -9,8 +9,8 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Check arguments
-if [ $# -ne 1 ] || [[ ! "$1" =~ ^(primary|secondary)$ ]]; then
-  echo "Usage: $0 [primary|secondary]"
+if [ $# -ne 1 ] || [[ ! "$1" =~ ^(primary|secondary|test)$ ]]; then
+  echo "Usage: $0 [primary|secondary|test]"
   exit 1
 fi
 
@@ -115,6 +115,30 @@ install_secondary() {
   chmod 440 /etc/sudoers.d/dkim-sync-secondary
 }
 
+# Test connection to all servers
+test_connection() {
+  if [ ! -f /etc/dkim_sync/servers.conf ]; then
+    echo "Error: /etc/dkim_sync/servers.conf not found"
+    exit 1
+  fi
+
+  echo "Testing connection to all servers..."
+  
+  while IFS= read -r server; do
+    # Skip empty lines and comments
+    [[ -z "$server" || "$server" =~ ^#.*$ ]] && continue
+    
+    echo "Testing connection to $server..."
+    
+    # Try to connect and automatically accept host key
+    if sudo -u dkim-sync ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=5 "$server" "echo 'Connection successful'"; then
+      echo "✓ Successfully connected to $server"
+    else
+      echo "✗ Failed to connect to $server"
+    fi
+  done < /etc/dkim_sync/servers.conf
+}
+
 # Main installation
 echo "Installing DKIM synchronization in $MODE mode..."
 
@@ -122,6 +146,8 @@ if [ "$MODE" = "primary" ]; then
   install_primary
 elif [ "$MODE" = "secondary" ]; then
   install_secondary
+elif [ "$MODE" = "test" ]; then
+  test_connection
 fi
 
 echo "Installation complete"
