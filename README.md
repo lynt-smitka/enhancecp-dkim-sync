@@ -49,7 +49,8 @@ After installation:
 
 1. On the primary mail server, configure `/etc/dkim_sync/servers.conf` with a list of secondary web servers
 2. Copy the primary mail server's SSH public key to each secondary web server's authorized_keys file
-3. Start the service on the primary server: `sudo systemctl enable --now dkim-sync.service`
+3. Try the connection from mailserver to webservers `sudo -u dkim-sync ssh SERVER_IP`
+4. Start the service on the primary server: `sudo systemctl enable --now dkim-sync.service`
 
 ## Operation
 
@@ -62,5 +63,5 @@ After installation:
 
 If synchronization issues occur:
 - Check log files in `/var/log/dkim_sync/`
-- Verify SSH connectivity from primary mail server to secondary web servers
+- Verify SSH connectivity from primary mail server to secondary web servers - `sudo -u dkim-sync ssh SERVER_IP`, you should be connected without any password prompts
 - Ensure sudoers configuration is correct on all servers
