@@ -1,0 +1,5 @@
+Cmnd_Alias DKIM_SYNC_PRIMARY = \
+    /usr/bin/rsync --chown\=dkim-sync\:nogroup -a /etc/dkimkeys/ /tmp/dkim_sync/dkimkeys/, \
+    /usr/bin/rsync --chown\=dkim-sync\:nogroup -a /etc/opendkim/ /tmp/dkim_sync/opendkim/
+
+dkim-sync ALL=(ALL) NOPASSWD: DKIM_SYNC_PRIMARY

@@ -1,0 +1,6 @@
+Cmnd_Alias DKIM_SYNC_SECONDARY = \
+    /usr/bin/rsync --chown\=root\:root -a /tmp/dkim_sync/opendkim/ /etc/opendkim/, \
+    /usr/bin/rsync --chown\=opendkim\:opendkim -a /tmp/dkim_sync/dkimkeys/ /etc/dkimkeys/, \
+    /bin/systemctl restart opendkim
+
+dkim-sync ALL=(ALL) NOPASSWD: DKIM_SYNC_SECONDARY

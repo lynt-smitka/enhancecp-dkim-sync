@@ -1,0 +1,13 @@
+[Unit]
+Description=DKIM Configuration Watcher
+After=network.target opendkim.service
+Wants=opendkim.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/dkim_watch.sh
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
